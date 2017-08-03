@@ -13,6 +13,7 @@ public enum Missing: MissingItem {
     case parameter(named: CustomStringConvertible)
     case config(named: CustomStringConvertible)
     case dropletService(named: CustomStringConvertible)
+    case entity(named: CustomStringConvertible)
     case custom(status: Status, name: String)
     case stub(named: CustomStringConvertible)
 
@@ -23,6 +24,8 @@ public enum Missing: MissingItem {
             case .config(let name):
                 return name.description
             case .dropletService(let name):
+                return name.description
+            case .entity(let name):
                 return name.description
             case .stub(let name):
                 return name.description
@@ -37,6 +40,8 @@ public enum Missing: MissingItem {
                 return .badRequest
             case .config, .dropletService:
                 return .internalServerError
+            case .entity:
+                return .notFound
             case .stub:
                 return .notImplemented
             case .custom(let status, _):
@@ -52,6 +57,8 @@ public enum Missing: MissingItem {
                 return "Missing config '\(name)'"
             case .dropletService(let name):
                 return "Missing service '\(name)'"
+            case .entity(let name):
+                return "'\(name)' not found"
             case .stub(let name):
                 return "Not implemented '\(name)'"
             case .custom(_, let name):
