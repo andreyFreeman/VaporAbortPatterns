@@ -14,6 +14,7 @@ public enum Missing: MissingItem {
     case config(named: CustomStringConvertible)
     case dropletService(named: CustomStringConvertible)
     case custom(status: Status, name: String)
+    case stub(named: CustomStringConvertible)
 
     public var name: String {
         switch self {
@@ -22,6 +23,8 @@ public enum Missing: MissingItem {
             case .config(let name):
                 return name.description
             case .dropletService(let name):
+                return name.description
+            case .stub(let name):
                 return name.description
             case .custom(_, let name):
                 return name.description
@@ -34,6 +37,8 @@ public enum Missing: MissingItem {
                 return .badRequest
             case .config, .dropletService:
                 return .internalServerError
+            case .stub:
+                return .notImplemented
             case .custom(let status, _):
                 return status
         }
@@ -47,6 +52,8 @@ public enum Missing: MissingItem {
                 return "Missing config '\(name)'"
             case .dropletService(let name):
                 return "Missing service '\(name)'"
+            case .stub(let name):
+                return "Not implemented '\(name)'"
             case .custom(_, let name):
                 return "Missing '\(name)'"
         }
@@ -54,7 +61,12 @@ public enum Missing: MissingItem {
 }
 
 extension Abort {
-    public static func missing(_ missing: MissingItem) -> AbortError {
+    
+    public static func missing(_ missing: Missing) -> AbortError {
+        return missingItem(missing)
+    }
+
+    public static func missingItem(_ missing: MissingItem) -> AbortError {
         return Abort(missing.status, reason: missing.reason)
     }
 }
