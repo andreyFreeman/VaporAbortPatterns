@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "VaporAbortPatterns", 
+    name: "AbortPatterns", 
     dependencies:[
         .Package(url: "https://github.com/vapor/vapor.git", majorVersion: 2),
     ]
